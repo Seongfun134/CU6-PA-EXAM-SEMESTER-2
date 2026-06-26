@@ -1,23 +1,16 @@
 /*
-    instruction: setup the enrollment schema according to the following requirements:
-    - course: (ObjectId, ref: 'Course', required)
-    - name: (String, required)
-    - email: (String, required)
-    - phone: (String, required)
-    - enrollmentDate: (Date, default: Date.now)
+    instruction: This file defines the routes for managing course enrollments.
+    - `GET /enrollments?course=xxx`: Get all enrollments for a specific course
+    - `POST /enrollments`: Create a new enrollment for a course
 */
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const {
+  getEnrollmentsByCourse,
+  createEnrollment,
+} = require("../controllers/enrollment");
 
-const enrollmentSchema = new mongoose.Schema({
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Course",
-    required: true,
-  },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  phone: { type: String, required: true },
-  enrollmentDate: { type: Date, default: Date.now },
-});
+router.get("/", getEnrollmentsByCourse);
+router.post("/", createEnrollment);
 
-module.exports = mongoose.model("Enrollment", enrollmentSchema);
+module.exports = router;

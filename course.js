@@ -1,25 +1,25 @@
 /*
-    instruction: setup the course schema according to the following requirements:
-    - title: (String, required)
-    - instructor: (ObjectId, ref: 'Instructor', required)
-    - startDate: (Date, required)
-    - duration: (String, required)
-    - category: (String)
-    - description: (String)
+    instruction: setup the course routes according to the following requirements:
+    - `GET /courses`: List all courses with sorting, pagination and filtering
+    - `GET /courses/:id`: Get a specific course by its id
+    - `POST /courses`: Add a new course
+    - `PUT /courses/:id`: Update a course
+    - `DELETE /courses/:id`: Delete a course
 */
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const {
+  getCourses,
+  getCourse,
+  AddNewCourse,
+  updateCourse,
+  deleteCourse,
+} = require("../controllers/course");
 
-const courseSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  instructor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor",
-    required: true,
-  },
-  startDate: { type: Date, required: true },
-  duration: { type: String, required: true },
-  category: { type: String },
-  description: { type: String },
-});
+router.get("/", getCourses);
+router.get("/:id", getCourse);
+router.post("/", AddNewCourse);
+router.put("/:id", updateCourse);
+router.delete("/:id", deleteCourse);
 
-module.exports = mongoose.model("Course", courseSchema);
+module.exports = router;
